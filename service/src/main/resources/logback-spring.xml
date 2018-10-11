@@ -1,0 +1,108 @@
+<configuration>
+    <springProperty scope="context" name="logEndpoint" source="log.endpoint"/>
+    <springProperty scope="context" name="logAccessKeyId" source="aliyun.accessKeyId"/>
+    <springProperty scope="context" name="logAccessKey" source="aliyun.accessKeySecret"/>
+    <springProperty scope="context" name="logProject" source="log.project"/>
+    <springProperty scope="context" name="logStore" source="log.store"/>
+    <!--为了防止进程退出时，内存中的数据丢失，请加上此选项-->
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
+    <appender name="loghubAppender" class="in.togetu.tscommon.loghubappender.LoghubAppender">
+        <!--必选项-->
+        <!-- 账号及网络配置 -->
+        <endpoint>${logEndpoint}</endpoint>
+        <accessKeyId>${logAccessKeyId}</accessKeyId>
+        <accessKey>${logAccessKey}</accessKey>
+
+        <!-- sls 项目配置 -->
+        <projectName>${logProject}</projectName>
+        <logstore>${logStore}}</logstore>
+        <!--必选项 (end)-->
+
+        <!-- 可选项 详见 '参数说明'-->
+        <packageTimeoutInMS>1000</packageTimeoutInMS>
+        <logsCountPerPackage>4096</logsCountPerPackage>
+        <logsBytesPerPackage>3145728</logsBytesPerPackage>
+        <memPoolSizeInByte>104857600</memPoolSizeInByte>
+        <retryTimes>3</retryTimes>
+        <maxIOThreadSizeInPool>8</maxIOThreadSizeInPool>
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter"><!-- 打印WARN,ERROR级别的日志 -->
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/tmp/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+                <totalSizeCap>100MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d [%thread] %-5level %logger{26} %L - %msg %n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 可用来获取StatusManager中的状态 -->
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+
+
+    <springProfile name="dev">
+        <logger name="com.aliyun.openservices.log" additivity="false">
+            <level value ="INFO"/>
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="FILE" />
+        </logger>
+        <root>
+            <level value="DEBUG"/>
+            <!--<appender-ref ref="loghubAppender"/>-->
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="FILE" />
+        </root>
+    </springProfile>
+
+    <springProfile name="daily">
+        <logger name="com.aliyun.openservices.log" additivity="false">
+            <level value ="INFO"/>
+            <appender-ref ref="loghubAppender"/>
+            <appender-ref ref="FILE"/>
+        </logger>
+        <root>
+            <level value="DEBUG"/>
+            <appender-ref ref="loghubAppender"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="pre">
+        <logger name="com.aliyun.openservices.log" additivity="false">
+            <level value ="INFO"/>
+            <appender-ref ref="loghubAppender"/>
+            <appender-ref ref="FILE"/>
+        </logger>
+        <root>
+            <level value="DEBUG"/>
+            <appender-ref ref="loghubAppender"/>
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="FILE" />
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <logger name="com.aliyun.openservices.log" additivity="false">
+            <level value ="INFO"/>
+            <appender-ref ref="loghubAppender"/>
+            <appender-ref ref="FILE"/>
+        </logger>
+        <root>
+            <level value="DEBUG"/>
+            <appender-ref ref="loghubAppender"/>
+        </root>
+    </springProfile>
+</configuration>

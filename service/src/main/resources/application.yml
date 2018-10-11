@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: ijboss
+  profiles:
+    active: dev
+
+server:
+  port: 8083
+  servlet:
+    context-path: /ijboss
+
+feign:
+  httpclient:
+    enabled: true
+
+injoin:
+  versionName: 1.1
+  applicationInStore: injoin01

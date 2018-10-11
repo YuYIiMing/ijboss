@@ -1,0 +1,57 @@
+#management:
+#  server:
+#    port: 8666 #管理端口调整成8666
+#    address: 127.0.0.1
+#    servlet:
+#      context-path: /monitor #actuator的访问路径
+#  endpoint:
+#    shutdown:
+#      enabled: true
+
+spring:
+  profiles: dev
+
+  data:
+    #elasticsearch:
+    #  repositories:
+    #    enabled: true
+    #  cluster-nodes: 118.31.57.67:9300
+    #  cluster-name: togetu-es
+    jest:
+      uri: http://es-sg-pqo0r6ozr0001bvcm.public.elasticsearch.aliyuncs.com:9200
+      username: elastic
+      password: 9981@togetu
+  redis:
+    database: 0
+    host: r-1ud98b167b053f04573.redis.rds.aliyuncs.com
+    password: togetU123
+    port: 6379
+    timeout: 3000
+    pool:
+      max-idle: 500 # 连接池中的最大空闲连接，默认值也是8。
+      min-idle: 50 #连接池中的最小空闲连接，默认值也是0。
+      max-active: 2000 # 如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。
+      max-wait: 1000 # 等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时。如果超过等待时间，则直接抛出JedisConnectionException
+
+tablestore:
+  product: tablestore
+  region: cn-hangzhou
+  endpoint: https://injoin-daily.cn-hangzhou.ots.aliyuncs.com
+  accessKey: LTAIHzdYHvbX1Q0a
+  accessSecret: WJNwvXuWwZaadL8A40cWnJNBMrbHsv
+  instance:
+    name: injoin-daily
+
+log:
+  endpoint: cn-hangzhou.log.aliyuncs.com
+  project: injoin-daily
+  store: injoin-biz-log
+
+yunxin:
+  appKey: 1e7666fe696eaf674ef0579a9da8b54d
+  appSecret: a650d7a845ff
+  createAccIdUrl: https://api.netease.im/nimserver/user/create.action
+
+aliyun:
+  accessKeyId: LTAIAEFI9eUlzPfl
+  accessKeySecret: XgOv71S9qH0ItvbBpsMKGLe4vuGSnm
