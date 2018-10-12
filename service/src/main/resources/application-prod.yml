@@ -25,3 +25,8 @@ tablestore:
 
 yunxin:
   createAccIdUrl: https://api.netease.im/nimserver/user/create.action
+
+address:
+  api:
+    tsuser:
+      user: http://192.168.79.228:8013/accounts

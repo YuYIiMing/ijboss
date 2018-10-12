@@ -48,6 +48,7 @@
         <fastjson.version>1.2.47</fastjson.version>
         <mysql-connector.version>6.0.5</mysql-connector.version>
         <mybatis-plus.version>2.3</mybatis-plus.version>
+        <velocity.version>1.7</velocity.version>
     </properties>
 
     <dependencyManagement>
@@ -220,6 +221,14 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!-- Code generator test sample-->
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>${velocity.version}</version>
+                <!--<scope>test</scope>-->
             </dependency>
         </dependencies>
 

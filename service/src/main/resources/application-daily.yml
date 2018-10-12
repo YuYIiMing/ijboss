@@ -24,6 +24,21 @@ spring:
       min-idle: 50 #连接池中的最小空闲连接，默认值也是0。
       max-active: 2000 # 如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。
       max-wait: 1000 # 等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时。如果超过等待时间，则直接抛出JedisConnectionException
+  datasource:
+    url: jdbc:mysql://rm-1ud3kpql97tk6fvz7so.mysql.rds.aliyuncs.com:3306/ijboss?useUnicode=true&characterEncoding=UTF-8&useSSL=false&zeroDateTimeBehavior=convertToNull
+    username: tsa
+    password: tsa^togetU
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 20
+      max-lifetime: 30000
+      idle-timeout: 30000
+      data-source-properties:
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        cachePrepStmts: true
+        useServerPrepStmts: true
 
 tablestore:
   product: tablestore
@@ -36,3 +51,8 @@ yunxin:
   appKey: c62fb60e44516af6974004b99ce93093
   appSecret: d06841aa9f4a
   createAccIdUrl: https://api.netease.im/nimserver/user/create.action
+
+address:
+  api:
+    tsuser:
+      user: http://101.37.192.79:8013/accounts

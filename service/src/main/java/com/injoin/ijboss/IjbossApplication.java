@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableAsync
 @ComponentScan("com.injoin.ijboss")
-@EnableFeignClients(basePackages = {"com.injoin.ijboss.client"})
+@EnableFeignClients(basePackages = {"com.injoin.ijuser.api", "com.injoin.ijflow.api"})
 public class IjbossApplication {
 
     public static void main(String[] args) {
