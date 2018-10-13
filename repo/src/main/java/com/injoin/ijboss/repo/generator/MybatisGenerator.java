@@ -26,6 +26,8 @@ public class MybatisGenerator {
      * </p>
      */
     public static void main(String[] args) {
+        String projectPath = "/Users/liunian/project/injoinu/ijboss";
+
         GlobalConfig config = new GlobalConfig();
         String dbUrl = "jdbc:mysql://rm-1ud3kpql97tk6fvz7so.mysql.rds.aliyuncs.com:3306/ijboss?useUnicode=true&characterEncoding=UTF-8&useSSL=false&zeroDateTimeBehavior=convertToNull";
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
@@ -54,10 +56,15 @@ public class MybatisGenerator {
                 .setEnableCache(false)
                 .setIdType(IdType.AUTO)
                 .setKotlin(false)
+                .setServiceName("%sService")
         ;
 
-        PackageConfig pc = new PackageConfig().setParent("com.injoin.ijboss.repo");
+        PackageConfig repoPc = new PackageConfig()
+                .setParent("com.injoin.ijboss")
+                .setMapper("repo.mapper")
+                .setEntity("repo.entity");
 
+        // 根据我们的项目结构定制 xml service impl controller 目录
         InjectionConfig injectionConfig = new InjectionConfig() {
             @Override
             public void initMap() {
@@ -65,19 +72,35 @@ public class MybatisGenerator {
             }
         };
         List<FileOutConfig> focList = new ArrayList<>();
+        // xml
         focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
-                return "/Users/liunian/project/injoinu/ijboss/repo/src/main/resources/mapper/" + tableInfo.getEntityName() + "Mapper.xml";
+                return projectPath + "/repo/src/main/resources/mapper/" + tableInfo.getEntityName() + "Mapper.xml";
             }
         });
+        // service
+        focList.add(new FileOutConfig("/templates/service.java.vm") {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                return projectPath + "/service/src/main/java/com/injoin/ijboss/service/" + tableInfo.getEntityName() + "Service.java";
+            }
+        });
+        // serviceImpl
+        focList.add(new FileOutConfig("/templates/serviceImpl.java.vm") {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                return projectPath + "/service/src/main/java/com/injoin/ijboss//service/impl/" + tableInfo.getEntityName() + "ServiceImpl.java";
+            }
+        });
+
         injectionConfig.setFileOutConfigList(focList);
 
         new AutoGenerator().setGlobalConfig(config)
                 .setDataSource(dataSourceConfig)
                 .setStrategy(strategyConfig)
-                .setPackageInfo(pc)
+                .setPackageInfo(repoPc)
                 .setCfg(injectionConfig)
                 .setTemplate(new TemplateConfig().setXml(null).setController(null).setService(null).setServiceImpl(null))
                 .execute();
